@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "applymate"
+version = "0.1.0"
+description = "A Django app used for managing and following up job applications"
+authors = ["atabak hooshangi <atabak.hooshangi.1990@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "5.0.6"
+pillow = "^10.3.0"
+django-filter = "^24.2"
+python-dotenv = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

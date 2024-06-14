@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Application</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 800px;
+        }
+        .form-group img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Edit Application</h1>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="company">Company</label>
+                <input type="text" class="form-control" id="company" name="company" value="{{ form.company.value }}">
+            </div>
+            <div class="form-group">
+                <label for="position">Position</label>
+                <input type="text" class="form-control" id="position" name="position" value="{{ form.position.value }}">
+            </div>
+            <div class="form-group">
+                <label for="level">Level</label>
+                <select class="form-control" id="level" name="level">
+                    {% for key, value in form.level.field.choices %}
+                        <option value="{{ key }}" {% if key == form.level.value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" class="form-control" id="country" name="country" value="{{ form.country.value }}">
+            </div>
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select class="form-control" id="type" name="type">
+                    {% for key, value in form.type.field.choices %}
+                        <option value="{{ key }}" {% if key == form.type.value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="source">Source</label>
+                <input type="text" class="form-control" id="source" name="source" value="{{ form.source.value }}">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description">{{ form.description.value }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="description_image">Description Image</label>
+                <input type="file" class="form-control-file" id="description_image" name="description_image">
+                {% if form.description_image.value %}
+                    <img src="{{ form.description_image.value.url }}" alt="Description Image">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="company_logo">Company Logo</label>
+                <input type="file" class="form-control-file" id="company_logo" name="company_logo">
+                {% if form.company_logo.value %}
+                    <img src="{{ form.company_logo.value.url }}" alt="Company Logo">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="feedback">Feedback</label>
+                <select class="form-control" id="feedback" name="feedback">
+                    {% for key, value in form.feedback.field.choices %}
+                        <option value="{{ key }}" {% if key == form.feedback.value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+        <a href="{% url 'application_list' %}" class="btn btn-secondary mt-3">Cancel</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

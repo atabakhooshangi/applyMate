@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Applications</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table th, .table td {
+            padding: 0.5rem; /* Reduce padding */
+            font-size: 0.875rem; /* Reduce font size */
+        }
+        .form-inline .form-group {
+            margin-right: 0.5rem; /* Reduce margin between form elements */
+            flex: 0 1 auto;
+        }
+        .logo {
+            width: 40px;  /* Adjust the width as needed */
+            height: auto;
+            border-radius: 5px;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem; /* Smaller buttons */
+            font-size: 0.875rem;
+        }
+        .filter-form {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+        }
+        .filter-form .form-group {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3">
+        <h1 class="mb-4">Job Applications</h1>
+        
+        <!-- Filter Form -->
+        <form method="get" class="form-inline mb-3 filter-form">
+            <div class="form-group">
+                <input type="text" name="company" class="form-control form-control-sm" placeholder="Company" value="{{ request.GET.company }}">
+            </div>
+            <div class="form-group">
+                <input type="text" name="position" class="form-control form-control-sm" placeholder="Position" value="{{ request.GET.position }}">
+            </div>
+            <div class="form-group">
+                <select name="level" class="form-control form-control-sm">
+                    <option value="">Level</option>
+                    {% for key, value in level_choices %}
+                        <option value="{{ key }}" {% if request.GET.level == key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="country" class="form-control form-control-sm" placeholder="Country" value="{{ request.GET.country }}">
+            </div>
+            <div class="form-group">
+                <select name="type" class="form-control form-control-sm">
+                    <option value="">Type</option>
+                    {% for key, value in type_choices %}
+                        <option value="{{ key }}" {% if request.GET.type == key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <select name="feedback" class="form-control form-control-sm">
+                    <option value="">Feedback</option>
+                    {% for key, value in feedback_choices %}
+                        <option value="{{ key }}" {% if request.GET.feedback == key %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" name="source" class="form-control form-control-sm" placeholder="Source" value="{{ request.GET.source }}">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+        </form>
+
+        <!-- Applications List -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Logo</th>
+                    <th>Company</th>
+                    <th>Position</th>
+                    <th>Level</th>
+                    <th>Country</th>
+                    <th>Type</th>
+                    <th>Source</th>
+                    <th>Feedback</th>
+                    <th>Create Time</th>
+                    <th>Update Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                    <tr>
+                        <td>
+                            {% if application.company_logo %}
+                                <img src="{{ application.company_logo.url }}" alt="Company Logo" class="logo">
+                            {% else %}
+                                <p>No logo available</p>
+                            {% endif %}
+                        </td>
+                        <td>{{ application.company }}</td>
+                        <td>{{ application.position }}</td>
+                        <td>{{ application.level }}</td>
+                        <td>{{ application.country }}</td>
+                        <td>{{ application.type }}</td>
+                        <td>{{ application.source }}</td>
+                        <td>{{ application.feedback }}</td>
+                        <td>{{ application.created_at|date }}</td>
+                        <td>{{ application.updated_at|date }}</td>
+                        <td>
+                            <a href="{% url 'application_detail' application.id %}" class="btn btn-info btn-sm">View</a>
+                            <a href="{% url 'application_edit' application.id %}" class="btn btn-warning btn-sm">Edit</a>
+{#                            <a href="{% url 'application_delete' application.id %}" class="btn btn-danger btn-sm">Delete</a>#}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination pagination-sm">
+                {% if applications.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?{% if request.GET.page %}page=1&{% endif %}{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ applications.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Previous</a></li>
+                {% endif %}
+                <li class="page-item disabled"><span class="page-link">Page {{ applications.number }} of {{ applications.paginator.num_pages }}</span></li>
+                {% if applications.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ applications.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ applications.paginator.num_pages }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Last</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

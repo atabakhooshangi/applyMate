@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .application-header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .application-header img.logo {
+            margin-right: 15px;
+            width: 50px;  /* Adjust the width as needed */
+            height: auto;
+        }
+        .application-details img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .application-section {
+            margin-bottom: 20px;
+        }
+        .btn-back {
+            margin-top: 20px;
+        }
+        .description-text {
+            white-space: pre-wrap;
+        }
+        .application-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="application-header">
+            {% if application.company_logo %}
+                <img src="{{ application.company_logo.url }}" alt="Company Logo" class="logo">
+            {% endif %}
+            <h1>{{ application.position }} at {{ application.company }}</h1>
+            <div class="application-meta">
+                Level: {{ application.level }} | Location: {{ application.country }} | Type: {{ application.type }} | Source: {{ application.source }}
+            </div>
+        </div>
+
+        <div class="application-details">
+            <div class="application-section">
+                <h4>Description</h4>
+                <p class="description-text">{{ application.description|linebreaks }}</p>
+            </div>
+            {% if application.description_image %}
+                <div class="application-section">
+                    <img src="{{ application.description_image.url }}" alt="Application Image">
+                </div>
+            {% endif %}
+
+     
+
+            <div class="application-section">
+                <h4>Feedback</h4>
+                <p>{{ application.feedback }}</p>
+            </div>
+            <div class="application-create">
+                <h4>Create Time</h4>
+                <p>{{ application.created_at }}</p>
+            </div>
+            <div class="application-update">
+                <h4>Last Updated Time</h4>
+                <p>{{ application.updated_at }}</p>
+            </div>
+
+            <a href="{% url 'application_list' %}" class="btn btn-secondary btn-back">Back to List</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
