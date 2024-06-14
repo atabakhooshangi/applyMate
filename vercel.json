@@ -4,9 +4,20 @@
       "src": "applyMate/wsgi.py",
       "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb" ,"runtime": "python3.12"}
+    },
+    {
+      "src": "deploy.sh",
+      "use": "@vercel/static-build",
+        "config": { "distDir": "static"}
+
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "headers": { "Cache-Control": "max-age=31536000, immutable" },
+      "dest": "static/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "applyMate/wsgi.py"
