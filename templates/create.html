@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Application</title>
+    <title>Create Application</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
@@ -19,79 +19,65 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Edit Application</h1>
+        <h1 class="mb-4">Create Application</h1>
         
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" action="{% url 'application_create' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="company">Company</label>
-                <input type="text" class="form-control" id="company" name="company" value="{{ form.company.value }}">
+                <input type="text" class="form-control" id="company" name="company">
             </div>
             <div class="form-group">
                 <label for="position">Position</label>
-                <input type="text" class="form-control" id="position" name="position" value="{{ form.position.value }}">
+                <input type="text" class="form-control" id="position" name="position">
             </div>
             <div class="form-group">
                 <label for="level">Level</label>
                 <select class="form-control" id="level" name="level">
                     {% for key, value in form.level.field.choices %}
-                        <option value="{{ key }}" {% if key == form.level.value %}selected{% endif %}>{{ value }}</option>
+                        <option value="{{ key }}">{{ value }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <label for="country">Country</label>
-                <input type="text" class="form-control" id="country" name="country" value="{{ form.country.value }}">
+                <input type="text" class="form-control" id="country" name="country">
             </div>
             <div class="form-group">
                 <label for="type">Type</label>
                 <select class="form-control" id="type" name="type">
                     {% for key, value in form.type.field.choices %}
-                        <option value="{{ key }}" {% if key == form.type.value %}selected{% endif %}>{{ value }}</option>
+                        <option value="{{ key }}">{{ value }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-group">
                 <label for="source">Source</label>
-                <input type="text" class="form-control" id="source" name="source" value="{{ form.source.value }}">
-            </div>
-            <div class="form-group">
-                <label for="job_link">Job Link</label>
-                <input type="text" class="form-control" id="job_link" name="job_link" value="{{ form.job_link.value }}">
+                <input type="text" class="form-control" id="source" name="source">
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description">{{ form.description.value }}</textarea>
+                <textarea class="form-control" id="description" name="description"></textarea>
             </div>
             <div class="form-group">
                 <label for="company_logo">Company Logo</label>
-                {% if form.company_logo_uri %}
-                    <img src="{{ form.company_logo_uri.value }}" alt="Company Logo" id="company_logo_thumbnail">
-                {% else %}
-                    <img src="" alt="Company Logo" id="company_logo_thumbnail" style="display: none;">
-                {% endif %}
+                <img src="" alt="Company Logo" id="company_logo_thumbnail" style="display: none;">
                 <input type="file" class="form-control-file" id="company_logo" name="company_logo">
             </div>
             <div class="form-group">
                 <label for="description_image">Description Image</label>
-                {% if form.description_image_uri %}
-                    
-                    <img src="{{ form.description_image_uri.value }}" alt="Description Image" id="description_image_thumbnail">
-                {% else %}
-                    <img src="" alt="Description Image" id="description_image_thumbnail" style="display: none;">
-                {% endif %}
+                <img src="" alt="Description Image" id="description_image_thumbnail" style="display: none;">
                 <input type="file" class="form-control-file" id="description_image" name="description_image">
             </div>
-           
             <div class="form-group">
                 <label for="feedback">Feedback</label>
                 <select class="form-control" id="feedback" name="feedback">
                     {% for key, value in form.feedback.field.choices %}
-                        <option value="{{ key }}" {% if key == form.feedback.value %}selected{% endif %}>{{ value }}</option>
+                        <option value="{{ key }}">{{ value }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-primary">Create Application</button>
         </form>
         <a href="{% url 'application_list' %}" class="btn btn-secondary mt-3">Cancel</a>
     </div>

@@ -4,3 +4,4 @@ django-filter==24.2
 python-dotenv==1.0.1
 psycopg-binary==3.1.19
 psycopg==3.1.19
+vercel-blob==0.2.4

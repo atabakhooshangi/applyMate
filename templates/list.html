@@ -31,11 +31,17 @@
         .filter-form .form-group {
             margin-bottom: 0;
         }
+        .top-right-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container mt-3">
         <h1 class="mb-4">Job Applications</h1>
+        <a href="{% url 'application_create' %}" class="btn btn-primary btn-sm top-right-button">Create</a>
         
         <!-- Filter Form -->
         <form method="get" class="form-inline mb-3 filter-form">
@@ -92,6 +98,7 @@
                     <th>Feedback</th>
                     <th>Create Time</th>
                     <th>Update Time</th>
+                    <th>Job Link</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -99,8 +106,8 @@
                 {% for application in applications %}
                     <tr>
                         <td>
-                            {% if application.company_logo %}
-                                <img src="{{ application.company_logo.url }}" alt="Company Logo" class="logo">
+                            {% if application.company_logo_uri %}
+                                <img src="{{ application.company_logo_uri }}" alt="Company Logo" class="logo">
                             {% else %}
                                 <p>No logo available</p>
                             {% endif %}
@@ -114,10 +121,11 @@
                         <td>{{ application.feedback }}</td>
                         <td>{{ application.created_at|date }}</td>
                         <td>{{ application.updated_at|date }}</td>
+                        <td><a href="{{ application.job_link }}" target="_blank">Job Link</a></td>
                         <td>
                             <a href="{% url 'application_detail' application.id %}" class="btn btn-info btn-sm">View</a>
                             <a href="{% url 'application_edit' application.id %}" class="btn btn-warning btn-sm">Edit</a>
-{#                            <a href="{% url 'application_delete' application.id %}" class="btn btn-danger btn-sm">Delete</a>#}
+                            {# <a href="{% url 'application_delete' application.id %}" class="btn btn-danger btn-sm">Delete</a> #}
                         </td>
                     </tr>
                 {% endfor %}

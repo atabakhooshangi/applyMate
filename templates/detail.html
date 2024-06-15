@@ -43,12 +43,12 @@
 <body>
     <div class="container mt-5">
         <div class="application-header">
-            {% if application.company_logo %}
-                <img src="{{ application.company_logo.url }}" alt="Company Logo" class="logo">
+            {% if application.company_logo_uri %}
+                <img src="{{ application.company_logo_uri }}" alt="Company Logo" class="logo">
             {% endif %}
             <h1>{{ application.position }} at {{ application.company }}</h1>
             <div class="application-meta">
-                Level: {{ application.level }} | Location: {{ application.country }} | Type: {{ application.type }} | Source: {{ application.source }}
+                Level: {{ application.level }} | Location: {{ application.country }} | Type: {{ application.type }} | Source: <a href="{{ application.job_link }}" target="_blank">{{ application.source }}</a>
             </div>
         </div>
 
@@ -57,9 +57,9 @@
                 <h4>Description</h4>
                 <p class="description-text">{{ application.description|linebreaks }}</p>
             </div>
-            {% if application.description_image %}
+            {% if application.description_image_uri %}
                 <div class="application-section">
-                    <img src="{{ application.description_image.url }}" alt="Application Image">
+                    <img src="{{ application.description_image_uri }}" alt="Application Image">
                 </div>
             {% endif %}
 
