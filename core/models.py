@@ -19,6 +19,7 @@ class TypeChoices(models.TextChoices):
 
 class FeedBackChoices(models.TextChoices):
     NO_FEEDBACK = 'No Feedback', 'No Feedback'
+    CALL = 'Call', 'Call'
     REJECTED = 'Rejected', 'Rejected'
     INTERVIEW = 'Interview', 'Interview'
     OFFER = 'Offer', 'Offer'
