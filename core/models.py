@@ -62,7 +62,7 @@ class Application(BaseModel):
     description_image_uri = models.URLField(blank=True, null=True)
     feedback = models.CharField(choices=FeedBackChoices.choices, max_length=255, default=FeedBackChoices.NO_FEEDBACK)
     source = models.CharField(max_length=255, blank=True, null=True)
-    job_link = models.URLField(blank=True, null=True,max_length=400)
+    job_link = models.URLField(blank=True, null=True,max_length=600)
 
     def __str__(self):
         return self.company
