@@ -28,19 +28,18 @@ class ApplicationView(FilterView, ListView):
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
         queryset = self.filterset.qs
         ordering = self.request.GET.get('ordering', '-updated_at')
-
         if ordering == 'level':
-            queryset = queryset.order_by('level','-created_at')
+            queryset = queryset.order_by('level', '-created_at')
         elif ordering == '-level':
-            queryset = queryset.order_by('-level','-created_at')
+            queryset = queryset.order_by('-level', '-created_at')
         elif ordering == 'created_at':
-            queryset = queryset.order_by('created_at','-created_at')
+            queryset = queryset.order_by('created_at', '-created_at')
         elif ordering == '-created_at':
-            queryset = queryset.order_by('-created_at','-created_at')
+            queryset = queryset.order_by('-created_at', '-created_at')
         elif ordering == 'updated_at':
-            queryset = queryset.order_by('updated_at','-created_at')
+            queryset = queryset.order_by('updated_at', '-created_at')
         elif ordering == '-updated_at':
-            queryset = queryset.order_by('-updated_at','-created_at')
+            queryset = queryset.order_by('-updated_at', '-created_at')
         return queryset
 
 
