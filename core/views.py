@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django_filters.views import FilterView
 from core.filters import ApplicationFilter
 from core.models import Application, LevelChoices, FeedBackChoices, TypeChoices
+from django.core.paginator import Paginator
 
 
 class ApplicationView(FilterView, ListView):
@@ -18,7 +19,29 @@ class ApplicationView(FilterView, ListView):
         context['level_choices'] = LevelChoices.choices
         context['feedback_choices'] = FeedBackChoices.choices
         context['type_choices'] = TypeChoices.choices
+        context['ordering'] = self.request.GET.get('ordering', 'created_at')
+
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+        queryset = self.filterset.qs
+        ordering = self.request.GET.get('ordering', '-updated_at')
+
+        if ordering == 'level':
+            queryset = queryset.order_by('level','-created_at')
+        elif ordering == '-level':
+            queryset = queryset.order_by('-level','-created_at')
+        elif ordering == 'created_at':
+            queryset = queryset.order_by('created_at','-created_at')
+        elif ordering == '-created_at':
+            queryset = queryset.order_by('-created_at','-created_at')
+        elif ordering == 'updated_at':
+            queryset = queryset.order_by('updated_at','-created_at')
+        elif ordering == '-updated_at':
+            queryset = queryset.order_by('-updated_at','-created_at')
+        return queryset
 
 
 class ApplicationDetailView(DetailView):

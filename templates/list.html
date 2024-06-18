@@ -81,6 +81,19 @@
             <div class="form-group">
                 <input type="text" name="source" class="form-control form-control-sm" placeholder="Source" value="{{ request.GET.source }}">
             </div>
+
+            <div class="form-group">
+                <select name="ordering" class="form-control form-control-sm">
+                    <option value="created_at" {% if request.GET.ordering == 'created_at' %}selected{% endif %}>Created At</option>
+                    <option value="-created_at" {% if request.GET.ordering == '-created_at' %}selected{% endif %}>Created At (Desc)</option>
+                    <option value="updated_at" {% if request.GET.ordering == 'updated_at' %}selected{% endif %}>Updated At</option>
+                    <option value="-updated_at" {% if request.GET.ordering == '-updated_at' %}selected{% endif %}>Updated At (Desc)</option>
+                    <option value="level" {% if request.GET.ordering == 'level' %}selected{% endif %}>Level</option>
+                    <option value="-level" {% if request.GET.ordering == '-level' %}selected{% endif %}>Level (Desc)</option>
+                    <!-- Add more ordering options as needed -->
+                </select>
+            </div>
+
             <button type="submit" class="btn btn-primary btn-sm">Filter</button>
         </form>
 
@@ -103,7 +116,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for application in applications %}
+                {% for application in page_obj %}
                     <tr>
                         <td>
                             {% if application.company_logo_uri %}
@@ -135,14 +148,14 @@
         <!-- Pagination -->
         <nav>
             <ul class="pagination pagination-sm">
-                {% if applications.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?{% if request.GET.page %}page=1&{% endif %}{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">First</a></li>
-                    <li class="page-item"><a class="page-link" href="?page={{ applications.previous_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Previous</a></li>
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1&ordering={{ request.GET.ordering }}&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'ordering' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&ordering={{ request.GET.ordering }}&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'ordering' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Previous</a></li>
                 {% endif %}
-                <li class="page-item disabled"><span class="page-link">Page {{ applications.number }} of {{ applications.paginator.num_pages }}</span></li>
-                {% if applications.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ applications.next_page_number }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Next</a></li>
-                    <li class="page-item"><a class="page-link" href="?page={{ applications.paginator.num_pages }}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Last</a></li>
+                <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&ordering={{ request.GET.ordering }}&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'ordering' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&ordering={{ request.GET.ordering }}&{% for key, value in request.GET.items %}{% if key != 'page' and key != 'ordering' %}{{ key }}={{ value }}&{% endif %}{% endfor %}">Last</a></li>
                 {% endif %}
             </ul>
         </nav>
